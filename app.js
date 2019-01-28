@@ -1,12 +1,15 @@
 document.getElementById("save-btn").addEventListener("click", saveContact);
+document.getElementById("recover-btn").addEventListener("click", recoverContacts);
 
 function saveContact() {
     let name = document.getElementById("name-input").value;
     let mobileNumber = document.getElementById("mobile-number-input").value;
+    let email = document.getElementById("email-input").value;
 
     let contact = {
         name: name,
-        mobileNumber: mobileNumber
+        mobileNumber: mobileNumber,
+        email: email
     };
 
     let contactsList = JSON.parse(localStorage.getItem("contacts")) || [];
@@ -36,6 +39,10 @@ function showContactsInView(contactsList){
                             <div>
                                 <i class="fas fa-mobile-alt"></i>
                                 <span>${contact.mobileNumber}</span>
+                            </div>
+                            <div>
+                                <i class="far fa-envelope"></i>
+                                <span>${contact.email}</span>
                             </div>
                         </div>
                     </div>
