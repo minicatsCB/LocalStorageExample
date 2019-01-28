@@ -16,8 +16,53 @@ function saveContact() {
     }
 }
 
+function recoverContacts(){
+    let contactsList = JSON.parse(localStorage.getItem("contacts"));
+    showContactsInView(contactsList);
+}
+
+function showContactsInView(contactsList){
+    var contactsElement = document.getElementById("contacts-list");
+    var contactsMarkup = "";
+
+    if(contactsList){
+        contactsMarkup = `
+            ${contactsList.map((contact, i) => replaceNullData `
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="mr-3 d-flex flex-wrap">
+                        <img class="mr-3" src="http://placekitten.com/100/100">
+                        <div>
+                            <p>${contact.name}</p>
+                            <div>
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>${contact.mobileNumber}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <i class="far fa-trash-alt"></i>
+                </div>
+            `).join('')}
+        `;
+    }
+
+    contactsElement.innerHTML = contactsMarkup;
+}
+
 function userExists(contactsList, contact) {
     return contactsList.find(existingContact => {
         return existingContact.name === contact.name;
     });
+}
+
+function replaceNullData(strings, ...parts) {
+    var checkedMarkup = "";
+    parts.forEach((part, index) => {
+        if (!part) {
+            part = "data not available";
+        }
+
+        checkedMarkup += strings[index] + part;
+    });
+
+    return checkedMarkup + strings[strings.length - 1];
 }
