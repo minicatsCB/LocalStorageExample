@@ -35,7 +35,7 @@ function showContactsInView(contactsList){
             ${contactsList.map((contact, i) => replaceNullData `
                 <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center flex-wrap">
                     <div class="mr-3 d-flex flex-wrap">
-                        <img class="mr-3" src="http://placekitten.com/100/100">
+                        <img class="mr-3 avatar" src="https://api.adorable.io/avatars/285/${contact.email}.png">
                         <div>
                             <p>${contact.name}</p>
                             <div>
