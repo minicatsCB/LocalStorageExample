@@ -1,6 +1,7 @@
 document.getElementById("save-btn").addEventListener("click", saveContact);
 document.getElementById("recover-btn").addEventListener("click", recoverContacts);
 document.getElementById("delete-all-btn").addEventListener("click", deleteAllContacts);
+document.getElementById("contacts-list").addEventListener("click", deleteSingleContact);
 
 function saveContact() {
     let name = document.getElementById("name-input").value;
@@ -47,7 +48,7 @@ function showContactsInView(contactsList){
                             </div>
                         </div>
                     </div>
-                    <i class="far fa-trash-alt"></i>
+                    <i class="far fa-trash-alt" data-name="${contact.name}"></i>
                 </div>
             `).join('')}
         `;
@@ -58,6 +59,18 @@ function showContactsInView(contactsList){
 
 function deleteAllContacts() {
     localStorage.setItem("contacts", JSON.stringify([]));
+}
+
+function deleteSingleContact(ev){
+    if (ev.target.classList.contains("fa-trash-alt")) {
+        let parentName = ev.target.dataset.name;
+        let contactsList = JSON.parse(localStorage.getItem("contacts"));
+        let indexToRemove = contactsList.findIndex(el => el.name === parentName);
+        if(indexToRemove > -1) {
+            contactsList.splice(indexToRemove, 1);
+        }
+        localStorage.setItem("contacts", JSON.stringify(contactsList));
+    }
 }
 
 function userExists(contactsList, contact) {
