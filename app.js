@@ -1,5 +1,6 @@
 document.getElementById("save-btn").addEventListener("click", saveContact);
 document.getElementById("recover-btn").addEventListener("click", recoverContacts);
+document.getElementById("delete-all-btn").addEventListener("click", deleteAllContacts);
 
 function saveContact() {
     let name = document.getElementById("name-input").value;
@@ -53,6 +54,10 @@ function showContactsInView(contactsList){
     }
 
     contactsElement.innerHTML = contactsMarkup;
+}
+
+function deleteAllContacts() {
+    localStorage.setItem("contacts", JSON.stringify([]));
 }
 
 function userExists(contactsList, contact) {
