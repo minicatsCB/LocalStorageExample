@@ -1,7 +1,17 @@
-document.getElementById("save-btn").addEventListener("click", saveContact);
 document.getElementById("recover-btn").addEventListener("click", recoverContacts);
 document.getElementById("delete-all-btn").addEventListener("click", deleteAllContacts);
 document.getElementById("contacts-list").addEventListener("click", deleteSingleContact);
+
+function validateForm(form) {
+    form.addEventListener('submit', event => {
+        if (form.checkValidity() === true) {
+            saveContact();
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        form.classList.add('was-validated');
+    }, false);
+}
 
 function saveContact() {
     let name = document.getElementById("name-input").value;
@@ -91,3 +101,6 @@ function replaceNullData(strings, ...parts) {
 
     return checkedMarkup + strings[strings.length - 1];
 }
+
+let forms = document.getElementsByClassName('needs-validation');
+let validation = Array.prototype.filter.call(forms, validateForm);
