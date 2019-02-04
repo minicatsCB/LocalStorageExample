@@ -8,12 +8,16 @@ document.getElementById("contacts-list").addEventListener("click", deleteSingleC
 
 function validateForm(form) {
     form.addEventListener('submit', event => {
+        var validationFailMsgElement = document.getElementById("validation-fail-msg");
         if (form.checkValidity() === true) {
             saveContact();
+            validationFailMsgElement.classList.add("d-none");
+        } else {
+            validationFailMsgElement.classList.remove("d-none");
         }
+        form.reset();
         event.preventDefault();
         event.stopPropagation();
-        form.classList.add('was-validated');
     }, false);
 }
 
@@ -32,7 +36,7 @@ function saveContact() {
     if(!userExists(contact)){
         contactsList.push(contact);
     } else {
-        let foundContactIndex = findContactIndex(name);
+        let foundContactIndex = findContactIndex(contact.name);
         contactsList[foundContactIndex] = contact;
     }
 
@@ -112,6 +116,7 @@ function userExists(contact) {
         return existingContact.name === contact.name;
     });
 }
+
 function findContactIndex(name){
     let foundContactIndex = -1;
      contactsList.forEach((existingContact, index) => {
