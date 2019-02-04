@@ -33,7 +33,7 @@ function saveContact() {
     };
 
     contactsList = JSON.parse(localStorage.getItem("contacts")) || [];
-    if(!userExists(contact)){
+    if(!contactExists(contact)){
         contactsList.push(contact);
     } else {
         let foundContactIndex = findContactIndex(contact.name);
@@ -111,7 +111,7 @@ function deleteSingleContact(ev){
     }
 }
 
-function userExists(contact) {
+function contactExists(contact) {
     return contactsList.find(existingContact => {
         return existingContact.name === contact.name;
     });
