@@ -1,3 +1,7 @@
+window.onload = function() {
+    contactsList = JSON.parse(localStorage.getItem("contacts")) || [];
+    showContactsInView();
+}
 document.getElementById("recover-btn").addEventListener("click", recoverContact);
 document.getElementById("delete-all-btn").addEventListener("click", deleteAllContacts);
 document.getElementById("contacts-list").addEventListener("click", deleteSingleContact);
