@@ -1,4 +1,4 @@
-document.getElementById("recover-btn").addEventListener("click", recoverContacts);
+document.getElementById("recover-btn").addEventListener("click", recoverContact);
 document.getElementById("delete-all-btn").addEventListener("click", deleteAllContacts);
 document.getElementById("contacts-list").addEventListener("click", deleteSingleContact);
 
@@ -27,13 +27,29 @@ function saveContact() {
     let contactsList = JSON.parse(localStorage.getItem("contacts")) || [];
     if(!userExists(contactsList, contact)){
         contactsList.push(contact);
-        localStorage.setItem("contacts", JSON.stringify(contactsList));
+    } else {
+        let foundContactIndex = findContactIndex(contactsList, name);
+        contactsList[foundContactIndex] = contact;
     }
+
+
+    localStorage.setItem("contacts", JSON.stringify(contactsList));
 }
 
-function recoverContacts(){
+function recoverContact(){
+    var name = document.getElementById("name-input").value;
     let contactsList = JSON.parse(localStorage.getItem("contacts"));
-    showContactsInView(contactsList);
+    var foundContact = contactsList.find(existingContact => {
+        return existingContact.name === name;
+    });
+
+    if(foundContact) {
+        document.getElementById("mobile-number-input").value = foundContact.mobileNumber;
+        document.getElementById("email-input").value = foundContact.email;
+    }
+    else {
+        console.log("The contact with name " + name + "doesn't exist");
+    }
 }
 
 function showContactsInView(contactsList){
@@ -87,6 +103,17 @@ function userExists(contactsList, contact) {
     return contactsList.find(existingContact => {
         return existingContact.name === contact.name;
     });
+}
+function findContactIndex(contactsList, name){
+    let foundContactIndex = -1;
+     contactsList.forEach((existingContact, index) => {
+        if(existingContact.name === name) {
+            foundContactIndex = index;
+        }
+    });
+    console.log(foundContactIndex);
+
+    return foundContactIndex;
 }
 
 function replaceNullData(strings, ...parts) {
