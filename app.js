@@ -24,21 +24,22 @@ function saveContact() {
         email: email
     };
 
-    let contactsList = JSON.parse(localStorage.getItem("contacts")) || [];
-    if(!userExists(contactsList, contact)){
+    contactsList = JSON.parse(localStorage.getItem("contacts")) || [];
+    if(!userExists(contact)){
         contactsList.push(contact);
     } else {
-        let foundContactIndex = findContactIndex(contactsList, name);
+        let foundContactIndex = findContactIndex(name);
         contactsList[foundContactIndex] = contact;
     }
 
 
     localStorage.setItem("contacts", JSON.stringify(contactsList));
+    showContactsInView();
 }
 
 function recoverContact(){
     var name = document.getElementById("name-input").value;
-    let contactsList = JSON.parse(localStorage.getItem("contacts"));
+    contactsList = JSON.parse(localStorage.getItem("contacts"));
     var foundContact = contactsList.find(existingContact => {
         return existingContact.name === name;
     });
@@ -48,11 +49,11 @@ function recoverContact(){
         document.getElementById("email-input").value = foundContact.email;
     }
     else {
-        console.log("The contact with name " + name + "doesn't exist");
+        console.log("The contact with name " + name + " doesn't exist");
     }
 }
 
-function showContactsInView(contactsList){
+function showContactsInView(){
     var contactsElement = document.getElementById("contacts-list");
     var contactsMarkup = "";
 
@@ -84,34 +85,36 @@ function showContactsInView(contactsList){
 }
 
 function deleteAllContacts() {
+    contactsList = [];
     localStorage.setItem("contacts", JSON.stringify([]));
+    showContactsInView();
 }
 
 function deleteSingleContact(ev){
     if (ev.target.classList.contains("fa-trash-alt")) {
         let parentName = ev.target.dataset.name;
-        let contactsList = JSON.parse(localStorage.getItem("contacts"));
+        contactsList = JSON.parse(localStorage.getItem("contacts"));
         let indexToRemove = contactsList.findIndex(el => el.name === parentName);
         if(indexToRemove > -1) {
             contactsList.splice(indexToRemove, 1);
         }
         localStorage.setItem("contacts", JSON.stringify(contactsList));
+        showContactsInView();
     }
 }
 
-function userExists(contactsList, contact) {
+function userExists(contact) {
     return contactsList.find(existingContact => {
         return existingContact.name === contact.name;
     });
 }
-function findContactIndex(contactsList, name){
+function findContactIndex(name){
     let foundContactIndex = -1;
      contactsList.forEach((existingContact, index) => {
         if(existingContact.name === name) {
             foundContactIndex = index;
         }
     });
-    console.log(foundContactIndex);
 
     return foundContactIndex;
 }
@@ -128,6 +131,6 @@ function replaceNullData(strings, ...parts) {
 
     return checkedMarkup + strings[strings.length - 1];
 }
-
+let contactsList;
 let forms = document.getElementsByClassName('needs-validation');
 let validation = Array.prototype.filter.call(forms, validateForm);
