@@ -1,0 +1,8 @@
+.avatar {
+    width: 100px;
+    height: auto;
+}
+
+.fa-trash-alt:hover {
+    color: red;
+}
